@@ -3,15 +3,15 @@
         "packages": "pkgs.nodejs_20",
         "install": "npm ci --prefer-offline --no-audit --no-progress",
         "start": "npm start",
-        "android": "npm run android",
-        "ios": "npm run ios"
+        "android": "\"npm\" \"run\" \"android\"",
+        "ios": "\"npm\" \"run\" \"ios\""
     },
     "yarn": {
         "packages": "pkgs.yarn",
         "install": "yarn install --frozen-lockfile",
         "start": "yarn start",
-        "android": "yarn android",
-        "ios": "yarn ios"
+        "android": "\"yarn\" \"android\"",
+        "ios": "\"yarn\" \"ios\""
     }
 }[packageManager]%}
 { pkgs, ... }: {
