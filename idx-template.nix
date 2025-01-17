@@ -7,10 +7,11 @@
   bootstrap = ''
     mkdir -p "$WS_NAME"
     
-    npx -y \
-      --package-manager ${packageManager} \
-      @react-native-community/cli init "$WS_NAME" \
-      --skip-install
+    # Install React Native CLI globally first
+    ${packageManager} install -g @react-native-community/cli
+    
+    # Then use it to initialize the project
+    npx @react-native-community/cli init "$WS_NAME" --skip-install
     
     mkdir "$WS_NAME/.idx/"
     packageManager=${packageManager} j2 ${./devNix.j2} -o "$WS_NAME/.idx/dev.nix"
