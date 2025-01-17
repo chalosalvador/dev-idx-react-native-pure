@@ -48,17 +48,6 @@
         android = {
           command = ["{{perPackageManager.android}}"];
           manager = "android-emulator";
-          options = {
-            name = "Pixel_4_API_33";
-            properties = {
-              avd.ini.displayname = "Pixel 4 API 33";
-              hw.lcd.density = "440";
-              hw.lcd.height = "2280";
-              hw.lcd.width = "1080";
-              hw.device.name = "pixel_4";
-              "image.sysdir.1" = "system-images/android-33/google_apis/x86_64/";
-            };
-          };
         };
       };
     };
