@@ -7,8 +7,8 @@
   bootstrap = ''
     mkdir -p "$WS_NAME"
     ${if packageManager == "yarn" 
-      then "yarn create react-native-app \"$WS_NAME\" --template react-native-template-typescript" 
-      else "npx react-native init \"$WS_NAME\" --template react-native-template-typescript"
+      then "yarn dlx react-native@latest init \"$WS_NAME\" --template react-native-template-typescript" 
+      else "npx react-native@latest init \"$WS_NAME\" --template react-native-template-typescript"
     }
     
     mkdir "$WS_NAME/.idx/"
