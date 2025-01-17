@@ -1,0 +1,23 @@
+{
+  "name": "React Native",
+  "description": "A React Native starter template without Expo",
+  "categories": ["Mobile"],
+  "icon": "https://www.gstatic.com/monospace/231115/logo_react-native.svg",
+  "publisher": "Google LLC",
+  "host": {
+    "virtualization": true
+  },
+  "params": [
+    {
+      "id": "packageManager",
+      "name": "What package manager do you want to use?",
+      "type": "enum",
+      "default": "npm",
+      "options": {
+        "npm": "npm",
+        "yarn": "yarn"
+      },
+      "required": true
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{% set perPackageManager = {
+    "npm": {
+        "packages": "pkgs.nodejs_20",
+        "install": "npm ci --prefer-offline --no-audit --no-progress",
+        "start": "npm start",
+        "android": "npm run android",
+        "ios": "npm run ios"
+    },
+    "yarn": {
+        "packages": "pkgs.yarn",
+        "install": "yarn install --frozen-lockfile",
+        "start": "yarn start",
+        "android": "yarn android",
+        "ios": "yarn ios"
+    }
+}[packageManager]%}
+{ pkgs, ... }: {
+  channel = "stable-23.11";
+  packages = [
+    {{perPackageManager.packages}}
+    pkgs.jdk21_headless
+    pkgs.gradle
+    pkgs.android-tools
+    pkgs.watchman
+  ];
+  env = {
+    ANDROID_HOME = "/workspace/android-sdk";
+  };
+  idx = {
+    extensions = [
+      "msjsdiag.vscode-react-native"
+      "dbaeumer.vscode-eslint"
+      "esbenp.prettier-vscode"
+    ];
+    workspace = {
+      onCreate = {
+        install = "{{perPackageManager.install}}";
+        setup-android = ''
+          mkdir -p $ANDROID_HOME
+          yes | sdkmanager --licenses
+          sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0"
+        '';
+      };
+      onStart = {
+        start-metro = "{{perPackageManager.start}}";
+      };
+    };
+    previews = {
+      enable = true;
+      previews = {
+        android = {
+          command = ["{{perPackageManager.android}}"];
+          manager = "web";
+        };
+      };
+    };
+  };
+}
