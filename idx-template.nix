@@ -8,7 +8,7 @@
     mkdir -p "$WS_NAME"
     
     # Initialize the project using npx directly
-    npx react-native@latest init "$WS_NAME" --skip-install
+    npx -y @react-native-community/cli init "$WS_NAME" --skip-install
     
     mkdir "$WS_NAME/.idx/"
     packageManager=${packageManager} j2 ${./devNix.j2} -o "$WS_NAME/.idx/dev.nix"
