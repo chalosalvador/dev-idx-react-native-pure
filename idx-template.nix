@@ -9,7 +9,8 @@
     
     npx -y \
       --package-manager ${packageManager} \
-      @react-native-community/cli init "$WS_NAME"
+      @react-native-community/cli init "$WS_NAME" \
+      --skip-install
     
     mkdir "$WS_NAME/.idx/"
     packageManager=${packageManager} j2 ${./devNix.j2} -o "$WS_NAME/.idx/dev.nix"
