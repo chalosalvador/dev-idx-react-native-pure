@@ -3,9 +3,8 @@
     pkgs.nodejs_20
     pkgs.yarn
     pkgs.jq
-		pkgs.j2cli
-		pkgs.nixfmt
-		
+    pkgs.j2cli
+    pkgs.nixfmt
   ];
   bootstrap = ''
     mkdir -p "$WS_NAME"
