@@ -44,10 +44,15 @@
     };
     previews = {
       enable = true;
-      previews = {
+       previews = {
+        web = {
+          command = [{{perPackageManager.previewWebPrefix}} "--port" "$PORT"];
+          manager = "web";
+        };
         android = {
-          command = ["{{perPackageManager.android}}"];
-          manager = "android";
+          # noop
+          command = ["tail" "-f" "/dev/null"];
+          manager = "web";
         };
       };
     };
