@@ -8,9 +8,8 @@
     "yarn": {
         "packages": "pkgs.yarn",
         "install": "yarn install --frozen-lockfile",
-        "start": "yarn start",
-        "android": "\"yarn\" \"android\"",
-        "ios": "\"yarn\" \"ios\""
+        "previewWebPrefix": "\"yarn\" \"web\" \"--\"",
+				"previewAndroidPrefix": "yarn android",
     }
 }[packageManager]%}
 { pkgs, ... }: {
