@@ -1,7 +1,7 @@
 {% set perPackageManager = {
     "npm": {
         "packages": "pkgs.nodejs_20",
-        "install": "npm ci --prefer-offline --no-audit --no-progress",
+        "install": "if [ -f package-lock.json ]; then npm ci --prefer-offline --no-audit --no-progress; else npm install --prefer-offline --no-audit --no-progress; fi",
         "start": "npm start",
         "android": "\"npm\" \"run\" \"android\"",
         "ios": "\"npm\" \"run\" \"ios\""
