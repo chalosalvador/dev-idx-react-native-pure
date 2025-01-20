@@ -35,6 +35,7 @@
 				setup-android = ''
 				export ANDROID_HOME="/nix/store/0wqd5nfc2hlx13davkvq2zf3zcy0wr61-androidsdk/libexec/android-sdk"
 				mkdir -p $ANDROID_HOME
+				'';
       };
       onStart = {
         start-metro = "{{perPackageManager.start}}";
