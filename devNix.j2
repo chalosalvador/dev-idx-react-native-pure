@@ -1,7 +1,7 @@
 {% set perPackageManager = {
     "npm": {
         "packages": "pkgs.nodejs_20",
-        "install": "if [ -f package-lock.json ]; then npm ci --prefer-offline --no-audit --no-progress; else npm install --prefer-offline --no-audit --no-progress; fi",
+        "install": "npm ci --prefer-offline --no-audit --no-progress",
         "start": "npm start",
         "android": "\"npm\" \"run\" \"android\"",
         "ios": "\"npm\" \"run\" \"ios\""
@@ -35,7 +35,11 @@
         setup-android = ''
           mkdir -p $ANDROID_HOME
           yes | sdkmanager --licenses
-          sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0"
+          sdkmanager "platform-tools" \
+            "platforms;android-33" \
+            "build-tools;33.0.0" \
+            "ndk;25.2.9519653" \
+            "cmake;3.22.1"
         '';
       };
       onStart = {
