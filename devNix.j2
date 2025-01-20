@@ -42,13 +42,24 @@
 				
 				# Create necessary directories
 				mkdir -p $ANDROID_HOME
+
+				# Start Metro in the background
+				{{perPackageManager.start}} &
 				'';
       };
-      onStart = {
-        start-metro = "{{perPackageManager.start}}";
-				setup-env = ''
+       onStart = {
+        setup-env = ''
+          # Unset any existing Android SDK variables
+          unset ANDROID_SDK_ROOT
+          unset ANDROID_HOME
+          
+          # Set the correct path
           export ANDROID_HOME="/nix/store/0wqd5nfc2hlx13davkvq2zf3zcy0wr61-androidsdk/libexec/android-sdk"
+          
+          # Set Gradle properties
+          export GRADLE_OPTS="-Dorg.gradle.daemon=true -Dorg.gradle.jvmargs=-Xmx2048m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Dorg.gradle.configureondemand=true -Dorg.gradle.parallel=true"
         '';
+      };
       };
     };
     previews = {
