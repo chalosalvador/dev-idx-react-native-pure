@@ -2,9 +2,8 @@
     "npm": {
         "packages": "pkgs.nodejs_20",
         "install": "if [ -f package-lock.json ]; then npm ci --prefer-offline --no-audit --no-progress; else npm install --prefer-offline --no-audit --no-progress; fi",
-        "start": "npm start",
-        "android": "\"npm\" \"run\" \"android\"",
-        "ios": "\"npm\" \"run\" \"ios\""
+        "previewWebPrefix": "\"npm\" \"run\" \"web\" \"--\"",
+				"previewAndroidPrefix": "npm run android --",
     },
     "yarn": {
         "packages": "pkgs.yarn",
@@ -48,16 +47,20 @@
 				'';
       };
        onStart = {
-        setup-env = ''
-          # Unset any existing Android SDK variables
-          unset ANDROID_SDK_ROOT
-          unset ANDROID_HOME
-          
-          # Set the correct path
-          export ANDROID_HOME="/nix/store/0wqd5nfc2hlx13davkvq2zf3zcy0wr61-androidsdk/libexec/android-sdk"
-          
-          # Set Gradle properties
-          export GRADLE_OPTS="-Dorg.gradle.daemon=true -Dorg.gradle.jvmargs=-Xmx2048m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -Dorg.gradle.configureondemand=true -Dorg.gradle.parallel=true"
+        {% if openIn == "development" %}
+        forward-ports = ''
+          socat -d -d TCP-LISTEN:5554,reuseaddr,fork TCP:$(cat /etc/resolv.conf | tail -n1 | cut -d " " -f 2):5554
+        '';
+        {% endif %}
+        connect-device = ''
+          adb -s localhost:5554 wait-for-device 
+        '';
+        android = ''
+          {% if openIn == "development" %}
+          {{packageManager}} run android
+          {% else %}
+          {{perPackageManager.previewAndroidPrefix}} --port 5554 --tunnel
+          {% endif %}
         '';
       };
     };
@@ -65,7 +68,7 @@
       enable = true;
        previews = {
         web = {
-          command = [{{perPackageManager.android}}];
+          command = [{{perPackageManager.previewWebPrefix}} "--port" "$PORT"];
           manager = "web";
         };
         android = {
