@@ -2,13 +2,11 @@
     "npm": {
         "packages": "pkgs.nodejs_20",
         "install": "if [ -f package-lock.json ]; then npm ci --prefer-offline --no-audit --no-progress; else npm install --prefer-offline --no-audit --no-progress; fi",
-        "previewWebPrefix": "\"npm\" \"run\" \"web\" \"--\"",
 				"previewAndroidPrefix": "npm run android --",
     },
     "yarn": {
         "packages": "pkgs.yarn",
         "install": "yarn install --frozen-lockfile",
-        "previewWebPrefix": "\"yarn\" \"web\" \"--\"",
 				"previewAndroidPrefix": "yarn android",
     }
 }[packageManager]%}
@@ -46,10 +44,6 @@
     previews = {
       enable = true;
        previews = {
-        web = {
-          command = [{{perPackageManager.previewWebPrefix}} "--port" "$PORT"];
-          manager = "web";
-        };
         android = {
           # noop
           command = ["tail" "-f" "/dev/null"];
