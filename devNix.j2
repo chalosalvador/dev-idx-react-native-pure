@@ -30,18 +30,17 @@
     workspace = {
       onCreate = {
         install = "{{perPackageManager.install}}";
-				'';
       };
-       onStart = {
-        forward-ports = ''
-          socat -d -d TCP-LISTEN:5554,reuseaddr,fork TCP:$(cat /etc/resolv.conf | tail -n1 | cut -d " " -f 2):5554
-        '';
-        connect-device = ''
-          adb -s localhost:5554 wait-for-device 
-        '';
-        android = ''        
-          {{packageManager}} run android
-        '';
+			onStart = {
+				forward-ports = ''
+					socat -d -d TCP-LISTEN:5554,reuseaddr,fork TCP:$(cat /etc/resolv.conf | tail -n1 | cut -d " " -f 2):5554
+				'';
+				connect-device = ''
+					adb -s localhost:5554 wait-for-device 
+				'';
+				android = ''        
+					{{packageManager}} run android
+				'';
       };
     };
     previews = {
