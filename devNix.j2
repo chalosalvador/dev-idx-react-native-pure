@@ -32,19 +32,6 @@
     workspace = {
       onCreate = {
         install = "{{perPackageManager.install}}";
-        setup-android = ''
-          mkdir -p $ANDROID_HOME
-          mkdir -p $ANDROID_HOME/ndk/23.1.7779620
-          yes | sdkmanager --licenses
-          sdkmanager "platform-tools"
-          sdkmanager "platforms;android-33"
-          sdkmanager "build-tools;33.0.0"
-          sdkmanager "ndk;23.1.7779620"
-          if [ -d "$ANDROID_HOME/ndk-bundle" ]; then
-            rm -rf "$ANDROID_HOME/ndk-bundle"
-          fi
-          ln -s "$ANDROID_HOME/ndk/23.1.7779620" "$ANDROID_HOME/ndk-bundle"
-        '';
       };
       onStart = {
         start-metro = "{{perPackageManager.start}}";
