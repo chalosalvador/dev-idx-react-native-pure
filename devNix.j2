@@ -33,8 +33,18 @@
       onCreate = {
         install = "{{perPackageManager.install}}";
 				setup-android = ''
+				# Unset any existing Android SDK variables
+        unset ANDROID_SDK_ROOT
+        unset ANDROID_HOME
+
+				# Set the correct path
 				export ANDROID_HOME="/nix/store/0wqd5nfc2hlx13davkvq2zf3zcy0wr61-androidsdk/libexec/android-sdk"
+				
+				# Create necessary directories
 				mkdir -p $ANDROID_HOME
+
+				# Remove any existing SDK root symlink
+				rm -f ~/.androidsdkroot
 				'';
       };
       onStart = {
