@@ -21,14 +21,20 @@
 		pkgs.socat
     pkgs.android-tools
     pkgs.watchman
-    pkgs.androidenv.androidPkgs_9_0.platform-tools
-    pkgs.androidenv.androidPkgs_9_0.build-tools-30-0-3
-    pkgs.androidenv.androidPkgs_9_0.platforms-android-30
+    (pkgs.androidenv.composeAndroidPackages {
+      buildToolsVersions = ["30.0.3"];
+      platformVersions = ["30"];
+      abiVersions = ["armeabi-v7a" "arm64-v8a" "x86" "x86_64"];
+    }).androidsdk
     pkgs.androidenv.androidndk_25
   ];
   
   env.ANDROID_NDK_ROOT = "${pkgs.androidenv.androidndk_25}";
-  env.ANDROID_SDK_ROOT = "${pkgs.androidenv.androidPkgs_9_0.platform-tools}/..";
+  env.ANDROID_SDK_ROOT = "${(pkgs.androidenv.composeAndroidPackages {
+      buildToolsVersions = ["30.0.3"];
+      platformVersions = ["30"];
+      abiVersions = ["armeabi-v7a" "arm64-v8a" "x86" "x86_64"];
+    }).androidsdk}/libexec/android-sdk";
   idx = {
     extensions = [
       "msjsdiag.vscode-react-native"
