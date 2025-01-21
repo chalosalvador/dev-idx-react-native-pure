@@ -47,9 +47,22 @@
       enable = true;
        previews = {
         android = {
-          # noop
-          command = ["tail" "-f" "/dev/null"];
+          command = [
+            "bash"
+            "-c"
+            ''
+              # Wait for the emulator to be ready
+              adb -s localhost:5554 wait-for-device
+              
+              # Forward the React Native development server port
+              socat tcp-listen:8081,reuseaddr,fork tcp:host.docker.internal:8081 &
+              
+              # Start the React Native development server and Android app
+              {{perPackageManager.previewAndroidPrefix}} start
+            ''
+          ];
           manager = "web";
+          url = "http://localhost:8081";
         };
       };
     };
