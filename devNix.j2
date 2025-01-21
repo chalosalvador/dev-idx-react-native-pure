@@ -12,94 +12,94 @@
 				"start": "yarn start"
     }
 }[packageManager]%}
-{ pkgs, config, ... }: {
-  channel = "stable-23.11";
-  
+{ pkgs, ... }: {
   config = {
+    channel = "stable-23.11";
+    
     android_sdk.accept_license = true;
-  };
-  
-  packages = [
-    {{perPackageManager.packages}}
-    pkgs.jdk21_headless
-    pkgs.gradle
-		pkgs.socat
-    pkgs.android-tools
-    pkgs.watchman
-    (pkgs.androidenv.composeAndroidPackages {
-      buildToolsVersions = ["30.0.3"];
-      platformVersions = ["30"];
-      abiVersions = ["armeabi-v7a" "arm64-v8a" "x86" "x86_64"];
-      includeNDK = false;  # We're adding NDK separately
-      includeEmulator = true;
-      includeSources = false;
-      includeSystemImages = false;
-      useGoogleAPIs = false;
-      licenseAccepted = true;  # Accept the license
-    }).androidsdk
-    pkgs.androidenv.androidndk_25
-  ];
-  
-  env.ANDROID_NDK_ROOT = "${pkgs.androidenv.androidndk_25}";
-  env.ANDROID_SDK_ROOT = "${(pkgs.androidenv.composeAndroidPackages {
-      buildToolsVersions = ["30.0.3"];
-      platformVersions = ["30"];
-      abiVersions = ["armeabi-v7a" "arm64-v8a" "x86" "x86_64"];
-      includeNDK = false;
-      includeEmulator = true;
-      includeSources = false;
-      includeSystemImages = false;
-      useGoogleAPIs = false;
-      licenseAccepted = true;
-    }).androidsdk}/libexec/android-sdk";
-  idx = {
-    extensions = [
-      "msjsdiag.vscode-react-native"
-      "dbaeumer.vscode-eslint"
-      "esbenp.prettier-vscode"
+    
+    packages = [
+      {{perPackageManager.packages}}
+      pkgs.jdk21_headless
+      pkgs.gradle
+      pkgs.socat
+      pkgs.android-tools
+      pkgs.watchman
+      (pkgs.androidenv.composeAndroidPackages {
+        buildToolsVersions = ["30.0.3"];
+        platformVersions = ["30"];
+        abiVersions = ["armeabi-v7a" "arm64-v8a" "x86" "x86_64"];
+        includeNDK = false;  # We're adding NDK separately
+        includeEmulator = true;
+        includeSources = false;
+        includeSystemImages = false;
+        useGoogleAPIs = false;
+        licenseAccepted = true;  # Accept the license
+      }).androidsdk
+      pkgs.androidenv.androidndk_25
     ];
-    workspace = {
-      onCreate = {
-        install = ''
-					# Install dependencies
-					{{perPackageManager.install}}
+    
+    env.ANDROID_NDK_ROOT = "${pkgs.androidenv.androidndk_25}";
+    env.ANDROID_SDK_ROOT = "${(pkgs.androidenv.composeAndroidPackages {
+        buildToolsVersions = ["30.0.3"];
+        platformVersions = ["30"];
+        abiVersions = ["armeabi-v7a" "arm64-v8a" "x86" "x86_64"];
+        includeNDK = false;
+        includeEmulator = true;
+        includeSources = false;
+        includeSystemImages = false;
+        useGoogleAPIs = false;
+        licenseAccepted = true;
+      }).androidsdk}/libexec/android-sdk";
+    
+    idx = {
+      extensions = [
+        "msjsdiag.vscode-react-native"
+        "dbaeumer.vscode-eslint"
+        "esbenp.prettier-vscode"
+      ];
+      workspace = {
+        onCreate = {
+          install = ''
+            # Install dependencies
+            {{perPackageManager.install}}
 
-					unset ANDROID_SDK_ROOT
+            unset ANDROID_SDK_ROOT
 
-					# Add more memory to the JVM
-          sed -i 's/org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m/org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m/' "android/gradle.properties"
-				'';
-      };
-			onStart = {
-        forward-ports = ''
-         	socat -d -d TCP-LISTEN:5554,reuseaddr,fork TCP:$(cat /etc/resolv.conf | tail -n1 | cut -d " " -f 2):5554
-       	'';
-				
-				connect-device = ''
-					# Wait for the emulator to be ready
-					adb -s localhost:5554 wait-for-device 
-				'';
-
-        android = ''
-					unset ANDROID_SDK_ROOT
-
-					# GRADLE_OPTS="-Dorg.gradle.daemon=false -Dorg.gradle.configureondemand=true" {{perPackageManager.android}}
-					{{perPackageManager.android}}
-        '';
-      };
-    };
-    previews = {
-      enable = true;
-       previews = {
-				web = {
-          command = [{{perPackageManager.start}}];
-          manager = "web";
+            # Add more memory to the JVM
+            sed -i 's/org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m/org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m/' "android/gradle.properties"
+          '';
         };
-				android = {
-				# noop
-				command = ["tail" "-f" "/dev/null"];
-				manager = "web";
-			};
+        onStart = {
+          forward-ports = ''
+            socat -d -d TCP-LISTEN:5554,reuseaddr,fork TCP:$(cat /etc/resolv.conf | tail -n1 | cut -d " " -f 2):5554
+          '';
+          
+          connect-device = ''
+            # Wait for the emulator to be ready
+            adb -s localhost:5554 wait-for-device 
+          '';
+
+          android = ''
+            unset ANDROID_SDK_ROOT
+
+            # GRADLE_OPTS="-Dorg.gradle.daemon=false -Dorg.gradle.configureondemand=true" {{perPackageManager.android}}
+            {{perPackageManager.android}}
+          '';
+        };
+      };
+      previews = {
+        enable = true;
+        previews = {
+          web = {
+            command = [{{perPackageManager.start}}];
+            manager = "web";
+          };
+          android = {
+            command = ["tail" "-f" "/dev/null"];
+            manager = "web";
+          };
+        };
       };
     };
   };
