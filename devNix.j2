@@ -3,11 +3,13 @@
         "packages": "pkgs.nodejs_20",
         "install": "if [ -f package-lock.json ]; then npm ci --prefer-offline --no-audit --no-progress; else npm install --prefer-offline --no-audit --no-progress; fi",
 				"previewAndroidPrefix": "npm run android --",
+				"start": "npm run start"
     },
     "yarn": {
         "packages": "pkgs.yarn",
         "install": "yarn install --frozen-lockfile",
 				"previewAndroidPrefix": "yarn android",
+				"start": "yarn start"
     }
 }[packageManager]%}
 { pkgs, ... }: {
@@ -33,6 +35,9 @@
 
 					# Add more memory to the JVM
           sed -i 's/org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m/org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m/' "android/gradle.properties"
+
+					# Start metro
+					{{perPackageManager.start}}
 				'';
       };
 			onStart = {
