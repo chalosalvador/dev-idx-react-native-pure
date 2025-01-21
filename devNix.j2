@@ -61,11 +61,15 @@
     previews = {
       enable = true;
        previews = {
-         android = {
-          # noop
-          command = ["tail" "-f" "/dev/null"];
+			 web = {
+          command = [{{perPackageManager.start}}];
           manager = "web";
         };
+				android = {
+				# noop
+				command = ["tail" "-f" "/dev/null"];
+				manager = "web";
+			};
       };
     };
   };
