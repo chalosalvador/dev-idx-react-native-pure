@@ -34,21 +34,21 @@
 					# Add more memory to the JVM
           sed -i 's/org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m/org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m/' "android/gradle.properties"
 				'';
+
+				adb -s localhost:5554 wait-for-device 
       };
 			onStart = {
-				forward-ports = ''
+				start-android = ''
           if ! lsof -i:5554 > /dev/null 2>&1; then
             socat -d -d TCP-LISTEN:5554,reuseaddr,fork TCP:$(cat /etc/resolv.conf | tail -n1 | cut -d " " -f 2):5554
           else
             echo "Port 5554 is already in use"
           fi
-				'';
-				connect-device = ''
-					adb -s localhost:5554 wait-for-device 
-				'';
-				android = ''        
+
 					{{packageManager}} run android
 				'';
+				
+				
       };
     };
     previews = {
