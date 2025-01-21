@@ -30,7 +30,7 @@
     ];
     workspace = {
       onCreate = {
-        install = ''
+        install-and-start-metro = ''
 					# Install dependencies
 					{{perPackageManager.install}}
 
@@ -41,11 +41,6 @@
 
 					# Start metro
 					{{perPackageManager.start}}
-				'';
-      };
-			onStart = {
-				start-android = ''
-					adb -s localhost:5554 wait-for-device
 				'';
       };
     };
@@ -60,8 +55,11 @@
               # Forward the React Native development server port
               socat tcp-listen:8081,reuseaddr,fork tcp:host.docker.internal:8081 &
               
-              # Start the React Native Android app
-              {{perPackageManager.android}}
+							# Wait for the emulator to be ready
+							adb -s localhost:5554 wait-for-device
+
+							# Start the React Native Android app with increased timeout
+              GRADLE_OPTS="-Dorg.gradle.daemon=false -Dorg.gradle.configureondemand=true" {{perPackageManager.android}}
             ''
           ];
           manager = "web";
