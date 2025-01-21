@@ -33,9 +33,9 @@
 
 					# Add more memory to the JVM
           sed -i 's/org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m/org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m/' "android/gradle.properties"
-				'';
 
-				adb -s localhost:5554 wait-for-device 
+					adb -s localhost:5554 wait-for-device
+				'';
       };
 			onStart = {
 				start-android = ''
