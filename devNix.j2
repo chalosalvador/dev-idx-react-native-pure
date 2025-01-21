@@ -16,7 +16,9 @@
   config = {
     channel = "stable-23.11";
     
-    android_sdk.accept_license = true;
+    nixpkgs.config = {
+      android_sdk.accept_license = true;
+    };
     
     packages = [
       {{perPackageManager.packages}}
