@@ -21,7 +21,14 @@
 		pkgs.socat
     pkgs.android-tools
     pkgs.watchman
+    pkgs.androidenv.androidPkgs_9_0.ndk
+    pkgs.androidenv.androidPkgs_9_0.platform-tools
+    pkgs.androidenv.androidPkgs_9_0.build-tools-34-0-0
+    pkgs.androidenv.androidPkgs_9_0.platforms-android-34
   ];
+  
+  env.ANDROID_NDK_ROOT = "${pkgs.androidenv.androidPkgs_9_0.ndk}";
+  env.ANDROID_SDK_ROOT = "${pkgs.androidenv.androidPkgs_9_0.platform-tools}/..";
   idx = {
     extensions = [
       "msjsdiag.vscode-react-native"
