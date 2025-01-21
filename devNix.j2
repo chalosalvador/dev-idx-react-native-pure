@@ -14,6 +14,12 @@
 }[packageManager]%}
 { pkgs, ... }: {
   channel = "stable-23.11";
+  
+  # Accept Android SDK license
+  acceptLicenses = [
+    "android-sdk-license"
+  ];
+  
   packages = [
     {{perPackageManager.packages}}
     pkgs.jdk21_headless
@@ -25,6 +31,12 @@
       buildToolsVersions = ["30.0.3"];
       platformVersions = ["30"];
       abiVersions = ["armeabi-v7a" "arm64-v8a" "x86" "x86_64"];
+      includeNDK = false;  # We're adding NDK separately
+      includeEmulator = true;
+      includeSources = false;
+      includeSystemImages = false;
+      useGoogleAPIs = false;
+      licenseAccepted = true;  # Accept the license
     }).androidsdk
     pkgs.androidenv.androidndk_25
   ];
@@ -34,6 +46,12 @@
       buildToolsVersions = ["30.0.3"];
       platformVersions = ["30"];
       abiVersions = ["armeabi-v7a" "arm64-v8a" "x86" "x86_64"];
+      includeNDK = false;
+      includeEmulator = true;
+      includeSources = false;
+      includeSystemImages = false;
+      useGoogleAPIs = false;
+      licenseAccepted = true;
     }).androidsdk}/libexec/android-sdk";
   idx = {
     extensions = [
