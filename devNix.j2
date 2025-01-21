@@ -43,25 +43,26 @@
 					{{perPackageManager.start}}
 				'';
       };
+			onStart = {
+        forward-ports = ''
+          socat -d -d TCP-LISTEN:5554,reuseaddr,fork TCP:$(cat /etc/resolv.conf | tail -n1 | cut -d " " -f 2):5554
+        '';
+				
+				connect-device = ''
+          adb -s localhost:5554 wait-for-device 
+        '';
+
+        android = ''
+					GRADLE_OPTS="-Dorg.gradle.daemon=false -Dorg.gradle.configureondemand=true" {{perPackageManager.android}}
+        '';
+      };
     };
     previews = {
       enable = true;
        previews = {
-        android = {
-          command = [
-            "bash"
-            "-c"
-            ''
-              # Forward the React Native development server port
-              socat tcp-listen:8081,reuseaddr,fork tcp:host.docker.internal:8081 &
-              
-							# Wait for the emulator to be ready
-							adb -s localhost:5554 wait-for-device
-
-							# Start the React Native Android app with increased timeout
-              GRADLE_OPTS="-Dorg.gradle.daemon=false -Dorg.gradle.configureondemand=true" {{perPackageManager.android}}
-            ''
-          ];
+         android = {
+          # noop
+          command = ["tail" "-f" "/dev/null"];
           manager = "web";
         };
       };
