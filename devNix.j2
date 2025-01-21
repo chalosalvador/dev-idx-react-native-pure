@@ -3,7 +3,7 @@
         "packages": "pkgs.nodejs_20",
         "install": "if [ -f package-lock.json ]; then npm ci --prefer-offline --no-audit --no-progress; else npm install --prefer-offline --no-audit --no-progress; fi",
 				"android": "npm run android",
-				"start": "npm run start"
+				"start": "\"npm\" \"run\" \"start\""
     },
     "yarn": {
         "packages": "pkgs.yarn",
@@ -59,7 +59,7 @@
     previews = {
       enable = true;
        previews = {
-			 web = {
+				web = {
           command = [{{perPackageManager.start}}];
           manager = "web";
         };
