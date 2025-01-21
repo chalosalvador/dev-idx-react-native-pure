@@ -45,13 +45,13 @@
         #  socat -d -d TCP-LISTEN:5554,reuseaddr,fork TCP:$(cat /etc/resolv.conf | tail -n1 | cut -d " " -f 2):5554
         # '';
 				
-				start-metro = ''
+				# start-metro = ''
 					# Wait for the emulator to be ready
 					# adb -s localhost:5554 wait-for-device 
 
 					# Start metro
-					{{perPackageManager.start}}
-				'';
+				#	{{perPackageManager.start}}
+				#	'';
 
         android = ''
 					GRADLE_OPTS="-Dorg.gradle.daemon=false -Dorg.gradle.configureondemand=true" {{perPackageManager.android}}
