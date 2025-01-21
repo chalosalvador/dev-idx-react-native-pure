@@ -28,7 +28,12 @@
     ];
     workspace = {
       onCreate = {
-        install = "{{perPackageManager.install}}";
+        install = ''
+					{{perPackageManager.install}}
+
+					# Add more memory to the JVM
+          sed -i 's/org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m/org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m/' "android/gradle.properties"
+				'';
       };
 			onStart = {
 				forward-ports = ''
