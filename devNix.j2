@@ -51,6 +51,8 @@
 				'';
 
         android = ''
+					unset ANDROID_SDK_ROOT
+
 					# GRADLE_OPTS="-Dorg.gradle.daemon=false -Dorg.gradle.configureondemand=true" {{perPackageManager.android}}
 					{{perPackageManager.android}}
         '';
