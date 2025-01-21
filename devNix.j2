@@ -2,7 +2,7 @@
     "npm": {
         "packages": "pkgs.nodejs_20",
         "install": "if [ -f package-lock.json ]; then npm ci --prefer-offline --no-audit --no-progress; else npm install --prefer-offline --no-audit --no-progress; fi",
-				"previewAndroidPrefix": "npm run android --",
+				"android": "npm run android",
 				"start": "npm run start"
     },
     "yarn": {
@@ -41,14 +41,12 @@
           sed -i 's/org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m/org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m/' "android/gradle.properties"
 
 					# Start metro
-					{{perPackageManager.start}}
+					{{perPackageManager.start}} &
 				'';
       };
 			onStart = {
 				start-android = ''
 					adb -s localhost:5554 wait-for-device
-
-					{{packageManager}} run android
 				'';
       };
     };
@@ -60,14 +58,11 @@
             "bash"
             "-c"
             ''
-              # Wait for the emulator to be ready
-              adb -s localhost:5554 wait-for-device
-              
               # Forward the React Native development server port
               socat tcp-listen:8081,reuseaddr,fork tcp:host.docker.internal:8081 &
               
-              # Start the React Native development server and Android app
-              {{perPackageManager.previewAndroidPrefix}} start
+              # Start the React Native Android app
+              {{perPackageManager.android}}
             ''
           ];
           manager = "web";
