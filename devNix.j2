@@ -41,24 +41,22 @@
 				'';
       };
 			onStart = {
-        forward-ports = ''
-         	socat -d -d TCP-LISTEN:5554,reuseaddr,fork TCP:$(cat /etc/resolv.conf | tail -n1 | cut -d " " -f 2):5554
-       	'';
+        # forward-ports = ''
+        #  	socat -d -d TCP-LISTEN:5554,reuseaddr,fork TCP:$(cat /etc/resolv.conf | tail -n1 | cut -d " " -f 2):5554
+       	# '';
 				
-				connect-device = ''
-					# Wait for the emulator to be ready
-					adb -s localhost:5554 wait-for-device 
-				'';
-
 				start-metro = ''
+					# Wait for the emulator to be ready
+					adb -s localhost:5555 wait-for-device 
+				
 					{{perPackageManager.start}}
 				'';
 
         android = ''
 					unset ANDROID_SDK_ROOT
 
-					# GRADLE_OPTS="-Dorg.gradle.daemon=false -Dorg.gradle.configureondemand=true" {{perPackageManager.android}}
-					{{perPackageManager.android}}
+					GRADLE_OPTS="-Dorg.gradle.daemon=false -Dorg.gradle.configureondemand=true" {{perPackageManager.android}}
+					# {{perPackageManager.android}}
         '';
       };
     };
