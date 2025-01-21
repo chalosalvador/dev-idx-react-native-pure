@@ -12,13 +12,12 @@
 				"start": "yarn start"
     }
 }[packageManager]%}
-{ pkgs, ... }: {
+{ pkgs, config, ... }: {
   channel = "stable-23.11";
   
-  # Accept Android SDK license
-  acceptLicenses = [
-    "android-sdk-license"
-  ];
+  config = {
+    android_sdk.accept_license = true;
+  };
   
   packages = [
     {{perPackageManager.packages}}
