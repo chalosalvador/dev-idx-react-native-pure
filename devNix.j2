@@ -34,8 +34,7 @@
 					# Install dependencies
 					{{perPackageManager.install}}
 
-					export ANDROID_HOME=/nix/store/0wqd5nfc2hlx13davkvq2zf3zcy0wr61-androidsdk/libexec/android-sdk
-					export ANDROID_SDK_ROOT=$ANDROID_HOME
+					unset ANDROID_SDK_ROOT
 
 					# Add more memory to the JVM
           sed -i 's/org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m/org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m/' "android/gradle.properties"
