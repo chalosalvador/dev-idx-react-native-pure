@@ -38,12 +38,6 @@
 			onStart = {
 				start-android = ''
 					adb -s localhost:5554 wait-for-device
-          
-					if ! lsof -i:5554 > /dev/null 2>&1; then
-            socat -d -d TCP-LISTEN:5554,reuseaddr,fork TCP:$(cat /etc/resolv.conf | tail -n1 | cut -d " " -f 2):5554
-          else
-            echo "Port 5554 is already in use"
-          fi
 
 					{{packageManager}} run android
 				'';
