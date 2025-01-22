@@ -21,6 +21,7 @@
 		pkgs.socat
     pkgs.android-tools
     pkgs.watchman
+    pkgs.androidStudioPackages.ndk
   ];
   idx = {
     extensions = [
@@ -34,7 +35,10 @@
 					# Install dependencies
 					{{perPackageManager.install}}
 
-					unset ANDROID_SDK_ROOT
+					# Create local Android SDK directory
+					mkdir -p $PWD/android-sdk-local
+					export ANDROID_SDK_ROOT=$PWD/android-sdk-local
+					export ANDROID_HOME=$ANDROID_SDK_ROOT
 
 					# Add more memory to the JVM
           sed -i 's/org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m/org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m/' "android/gradle.properties"
@@ -42,11 +46,13 @@
       };
 			onStart = {
 				start-metro = ''
-          unset ANDROID_SDK_ROOT
+          export ANDROID_SDK_ROOT=$PWD/android-sdk-local
+          export ANDROID_HOME=$ANDROID_SDK_ROOT
           {{perPackageManager.start}}
         '';
         run-android = ''
-					unset ANDROID_SDK_ROOT
+					export ANDROID_SDK_ROOT=$PWD/android-sdk-local
+          export ANDROID_HOME=$ANDROID_SDK_ROOT
           
 					# Ensure Metro is running first
           if ! pgrep -f "metro"; then
