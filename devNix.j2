@@ -49,9 +49,9 @@
 					unset ANDROID_SDK_ROOT
 		
 					# Wait for the emulator to be ready
-					adb -s localhost:5555 wait-for-device 
+					# adb -s localhost:5555 wait-for-device 
 				
-					{{perPackageManager.start}}
+					# {{perPackageManager.start}}
 		
 
 					GRADLE_OPTS="-Dorg.gradle.daemon=false -Dorg.gradle.configureondemand=true" {{perPackageManager.android}}
