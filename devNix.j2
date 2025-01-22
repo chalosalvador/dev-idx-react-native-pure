@@ -54,8 +54,8 @@
 					# {{perPackageManager.start}}
 		
 
-					GRADLE_OPTS="-Dorg.gradle.daemon=false -Dorg.gradle.configureondemand=true" {{perPackageManager.android}}
-					# {{perPackageManager.android}}
+					# GRADLE_OPTS="-Dorg.gradle.daemon=false -Dorg.gradle.configureondemand=true" {{perPackageManager.android}}
+					{{perPackageManager.android}}
         '';
       };
     };
