@@ -55,11 +55,20 @@
           {{perPackageManager.start}}
         '';
         run-android = ''
+					# Ensure Metro is running first
+          if ! pgrep -f "metro"; then
+            echo "Starting Metro bundler first..."
+            {{perPackageManager.start}} &
+            sleep 10
+          fi
+					
           export ANDROID_SDK_ROOT=$PWD/android-sdk-local
           export ANDROID_HOME=$ANDROID_SDK_ROOT
           
          	# Use the specified device
           export ANDROID_SERIAL=emulator-5554
+          
+          
           
           # Set longer timeout for React Native CLI
           export RN_CLI_CONFIG_TIMEOUT=300000
