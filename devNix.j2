@@ -39,8 +39,14 @@
 					export ANDROID_SDK_ROOT=$PWD/android-sdk-local
 					export ANDROID_HOME=$ANDROID_SDK_ROOT
 
+					# Accept Android SDK licenses
+					mkdir -p $ANDROID_SDK_ROOT/licenses
+					echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > $ANDROID_SDK_ROOT/licenses/android-sdk-license
+					echo "d56f5187479451eabf01fb78af6dfcb131a6481e" >> $ANDROID_SDK_ROOT/licenses/android-sdk-license
+					echo "84831b9409646a918e30573bab4c9c91346d8abd" > $ANDROID_SDK_ROOT/licenses/android-sdk-preview-license
+
 					# Add more memory to the JVM
-          sed -i 's/org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m/org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m/' "android/gradle.properties"
+					sed -i 's/org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m/org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m/' "android/gradle.properties"
 				'';
       };
 			onStart = {
@@ -50,10 +56,24 @@
           {{perPackageManager.start}}
         '';
         run-android = ''
-					export ANDROID_SDK_ROOT=$PWD/android-sdk-local
+          export ANDROID_SDK_ROOT=$PWD/android-sdk-local
           export ANDROID_HOME=$ANDROID_SDK_ROOT
           
-					# Ensure Metro is running first
+          # List available devices
+          echo "Available devices:"
+          $ANDROID_HOME/platform-tools/adb devices
+
+          # If no device is specified, ask user to select one
+          # if [ -z "$ANDROID_DEVICE" ]; then
+          #   echo "Multiple devices detected. Please set ANDROID_DEVICE environment variable with the device ID"
+          #   echo "Example: ANDROID_DEVICE=emulator-5554 idx run-android"
+          #   exit 1
+          # fi
+
+          # Use the specified device
+          export ANDROID_SERIAL=emulator-5554
+          
+          # Ensure Metro is running first
           if ! pgrep -f "metro"; then
             echo "Starting Metro bundler first..."
             {{perPackageManager.start}} &
