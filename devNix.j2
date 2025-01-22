@@ -40,7 +40,7 @@
           sed -i 's/org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m/org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m/' "android/gradle.properties"
 
 					# Start the metro bundler
-					{{perPackageManager.start}}
+					{{perPackageManager.start}} &
 				'';
       };
 			onStart = {
