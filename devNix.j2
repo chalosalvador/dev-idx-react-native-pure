@@ -49,65 +49,37 @@
 					sed -i 's/org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m/org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m/' "android/gradle.properties"
 				'';
       };
-			# onStart = {
-			# 	start-metro = ''
-      #     export ANDROID_SDK_ROOT=$PWD/android-sdk-local
-      #     export ANDROID_HOME=$ANDROID_SDK_ROOT
-      #     {{perPackageManager.start}}
-      # '';
-      #   run-android = ''
-      #     export ANDROID_SDK_ROOT=$PWD/android-sdk-local
-      #     export ANDROID_HOME=$ANDROID_SDK_ROOT
-      #     
-      #    	# Use the specified device
-      #     export ANDROID_SERIAL=emulator-5554
-      #     
-      #     # Ensure Metro is running first
-      #     if ! pgrep -f "metro"; then
-      #       echo "Starting Metro bundler first..."
-      #       {{perPackageManager.start}} &
-      #       sleep 10
-      #     fi
+			onStart = {
+				start-metro = ''
+          export ANDROID_SDK_ROOT=$PWD/android-sdk-local
+          export ANDROID_HOME=$ANDROID_SDK_ROOT
+          {{perPackageManager.start}}
+        '';
+        run-android = ''
+          export ANDROID_SDK_ROOT=$PWD/android-sdk-local
+          export ANDROID_HOME=$ANDROID_SDK_ROOT
           
-      #     # Set longer timeout for React Native CLI
-      #     export RN_CLI_CONFIG_TIMEOUT=300000
-      #     {{perPackageManager.android}}
-      # '';
-      # };
+         	# Use the specified device
+          export ANDROID_SERIAL=emulator-5554
+          
+          # Ensure Metro is running first
+          if ! pgrep -f "metro"; then
+            echo "Starting Metro bundler first..."
+            {{perPackageManager.start}} &
+            sleep 10
+          fi
+          
+          # Set longer timeout for React Native CLI
+          export RN_CLI_CONFIG_TIMEOUT=300000
+          {{perPackageManager.android}}
+        '';
+      };
     };
     previews = {
       enable = true;
        previews = {
 				android = {
-				 command = [
-            "bash"
-            "-c"
-            ''
-							# Setup Android environment variables
-              export ANDROID_SDK_ROOT=$PWD/android-sdk-local
-              export ANDROID_HOME=$ANDROID_SDK_ROOT
-              export ANDROID_SERIAL=emulator-5554
-              export RN_CLI_CONFIG_TIMEOUT=300000
-              
-              # Start Metro bundler if not running
-              if ! pgrep -f "metro"; then
-                echo "Starting Metro bundler..."
-                {{perPackageManager.start}} &
-                
-                # Wait for Metro to be fully started
-                while ! nc -z localhost 8081; do   
-                  sleep 1
-                done
-              fi
-              
-              # Ensure ADB is connected to the right device
-              adb wait-for-device
-              
-              # Run Android specifically for emulator-5554
-              ANDROID_SERIAL=emulator-5554 {{perPackageManager.android}}
-            ''
-          ];
-				manager = "web";
+					manager = "web";
 			};
       };
     };
