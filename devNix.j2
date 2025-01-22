@@ -80,8 +80,7 @@
        previews = {
 				android = {
 				# noop
-				# command = [{{perPackageManager.android}}];
-				command = ["tail" "-f" "/dev/null"];
+				command = ["socat" "tcp-listen:8081,reuseaddr,fork" "tcp:localhost:8081"];
 				manager = "web";
 			};
       };
