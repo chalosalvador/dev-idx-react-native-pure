@@ -42,14 +42,21 @@
       };
 			onStart = {
 				start-metro = ''
-					unset ANDROID_SDK_ROOT
-					{{perPackageManager.start}}
-				'';
-				# run-android = ''
-				
-					# GRADLE_OPTS="-Dorg.gradle.daemon=false -Dorg.gradle.configureondemand=true" {{perPackageManager.android}}
-					# {{perPackageManager.android}}
-				# '';
+          unset ANDROID_SDK_ROOT
+          {{perPackageManager.start}}
+        '';
+        run-android = ''
+          # Ensure Metro is running first
+          if ! pgrep -f "metro"; then
+            echo "Starting Metro bundler first..."
+            {{perPackageManager.start}} &
+            sleep 10
+          fi
+          
+          # Set longer timeout for React Native CLI
+          export RN_CLI_CONFIG_TIMEOUT=300000
+          {{perPackageManager.android}}
+        '';
       };
     };
     previews = {
@@ -57,8 +64,8 @@
        previews = {
 				android = {
 				# noop
-				command = [{{perPackageManager.android}}];
-				# command = ["tail" "-f" "/dev/null"];
+				# command = [{{perPackageManager.android}}];
+				command = ["tail" "-f" "/dev/null"];
 				manager = "web";
 			};
       };
