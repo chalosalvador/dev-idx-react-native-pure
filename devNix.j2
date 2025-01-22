@@ -1,14 +1,14 @@
 {% set perPackageManager = {
     "npm": {
         "packages": "pkgs.nodejs_20",
-        "install": "if [ -f package-lock.json ]; then npm ci --prefer-offline --no-audit --no-progress; else npm install --prefer-offline --no-audit --no-progress; fi",
-				"android": "\"npm\" \"run\" \"android\"",
+        "install": "npm install --prefer-offline --no-audit --no-progress",
+				"android": "npm run android",
 				"start": "npm run start"
     },
     "yarn": {
         "packages": "pkgs.yarn",
         "install": "yarn install --frozen-lockfile",
-				"previewAndroidPrefix": "yarn android",
+				"android": "yarn android",
 				"start": "yarn start"
     }
 }[packageManager]%}
@@ -18,7 +18,6 @@
     {{perPackageManager.packages}}
     pkgs.jdk21_headless
     pkgs.gradle
-		pkgs.socat
     pkgs.android-tools
     pkgs.watchman
   ];
@@ -61,13 +60,6 @@
           
          	# Use the specified device
           export ANDROID_SERIAL=emulator-5554
-          
-          # Ensure Metro is running first
-          if ! pgrep -f "metro"; then
-            echo "Starting Metro bundler first..."
-            {{perPackageManager.start}} &
-            sleep 10
-          fi
           
           # Set longer timeout for React Native CLI
           export RN_CLI_CONFIG_TIMEOUT=300000
