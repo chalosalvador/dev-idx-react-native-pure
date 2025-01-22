@@ -49,38 +49,55 @@
 					sed -i 's/org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m/org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m/' "android/gradle.properties"
 				'';
       };
-			onStart = {
-				start-metro = ''
-          export ANDROID_SDK_ROOT=$PWD/android-sdk-local
-          export ANDROID_HOME=$ANDROID_SDK_ROOT
-          {{perPackageManager.start}}
-        '';
-        run-android = ''
-          export ANDROID_SDK_ROOT=$PWD/android-sdk-local
-          export ANDROID_HOME=$ANDROID_SDK_ROOT
+			# onStart = {
+			# 	start-metro = ''
+      #     export ANDROID_SDK_ROOT=$PWD/android-sdk-local
+      #     export ANDROID_HOME=$ANDROID_SDK_ROOT
+      #     {{perPackageManager.start}}
+      # '';
+      #   run-android = ''
+      #     export ANDROID_SDK_ROOT=$PWD/android-sdk-local
+      #     export ANDROID_HOME=$ANDROID_SDK_ROOT
+      #     
+      #    	# Use the specified device
+      #     export ANDROID_SERIAL=emulator-5554
+      #     
+      #     # Ensure Metro is running first
+      #     if ! pgrep -f "metro"; then
+      #       echo "Starting Metro bundler first..."
+      #       {{perPackageManager.start}} &
+      #       sleep 10
+      #     fi
           
-         	# Use the specified device
-          export ANDROID_SERIAL=emulator-5554
-          
-          # Ensure Metro is running first
-          if ! pgrep -f "metro"; then
-            echo "Starting Metro bundler first..."
-            {{perPackageManager.start}} &
-            sleep 10
-          fi
-          
-          # Set longer timeout for React Native CLI
-          export RN_CLI_CONFIG_TIMEOUT=300000
-          {{perPackageManager.android}}
-        '';
-      };
+      #     # Set longer timeout for React Native CLI
+      #     export RN_CLI_CONFIG_TIMEOUT=300000
+      #     {{perPackageManager.android}}
+      # '';
+      # };
     };
     previews = {
       enable = true;
        previews = {
 				android = {
-				# noop
-				# command = [];
+				 command = [
+            "bash"
+            "-c"
+            ''
+              export ANDROID_SDK_ROOT=$PWD/android-sdk-local
+              export ANDROID_HOME=$ANDROID_SDK_ROOT
+              export ANDROID_SERIAL=emulator-5554
+              export RN_CLI_CONFIG_TIMEOUT=300000
+              
+              # Start Metro bundler in the background
+              {{perPackageManager.start}} &
+              
+              # Wait for Metro to start
+              sleep 10
+              
+              # Run Android
+              {{perPackageManager.android}}
+            ''
+          ];
 				manager = "web";
 			};
       };
