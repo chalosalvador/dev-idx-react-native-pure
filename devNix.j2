@@ -38,25 +38,16 @@
 
 					# Add more memory to the JVM
           sed -i 's/org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m/org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m/' "android/gradle.properties"
+
+					# Start the metro bundler
+					{{perPackageManager.start}}
 				'';
       };
 			onStart = {
-        # forward-ports = ''
-        #  	socat -d -d TCP-LISTEN:5554,reuseaddr,fork TCP:$(cat /etc/resolv.conf | tail -n1 | cut -d " " -f 2):5554
-       	# '';
-				
-				start-metro = ''
-					unset ANDROID_SDK_ROOT
-		
-					# Wait for the emulator to be ready
-					# adb -s localhost:5555 wait-for-device 
-				
-					{{perPackageManager.start}}
-        '';
-
 				run-android = ''
 					unset ANDROID_SDK_ROOT
-					{{perPackageManager.android}}
+					GRADLE_OPTS="-Dorg.gradle.daemon=false -Dorg.gradle.configureondemand=true" {{perPackageManager.android}}
+					# {{perPackageManager.android}}
 				'';
       };
     };
