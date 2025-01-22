@@ -2,14 +2,14 @@
     "npm": {
         "packages": "pkgs.nodejs_20",
         "install": "npm install --prefer-offline --no-audit --no-progress",
-				"android": "npm run android",
-				"start": "npm run start"
+        "android": "npm run android",
+        "start": "npm run start"
     },
     "yarn": {
         "packages": "pkgs.yarn",
         "install": "yarn install --frozen-lockfile",
-				"android": "yarn android",
-				"start": "yarn start"
+        "android": "yarn android",
+        "start": "yarn start"
     }
 }[packageManager]%}
 { pkgs, ... }: {
@@ -30,45 +30,43 @@
     workspace = {
       onCreate = {
         install = ''
-					# Install dependencies
-					{{perPackageManager.install}}
+          # Install dependencies
+          {{perPackageManager.install}}
 
-					# Create local Android SDK directory
-					mkdir -p $PWD/android-sdk-local
-					export ANDROID_SDK_ROOT=$PWD/android-sdk-local
-					export ANDROID_HOME=$ANDROID_SDK_ROOT
+          # Create local Android SDK directory
+          mkdir -p $PWD/android-sdk-local
+          export ANDROID_SDK_ROOT=$PWD/android-sdk-local
+          export ANDROID_HOME=$ANDROID_SDK_ROOT
 
-					# Accept Android SDK licenses
-					mkdir -p $ANDROID_SDK_ROOT/licenses
-					echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > $ANDROID_SDK_ROOT/licenses/android-sdk-license
-					echo "d56f5187479451eabf01fb78af6dfcb131a6481e" >> $ANDROID_SDK_ROOT/licenses/android-sdk-license
-					echo "84831b9409646a918e30573bab4c9c91346d8abd" > $ANDROID_SDK_ROOT/licenses/android-sdk-preview-license
+          # Accept Android SDK licenses
+          mkdir -p $ANDROID_SDK_ROOT/licenses
+          echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > $ANDROID_SDK_ROOT/licenses/android-sdk-license
+          echo "d56f5187479451eabf01fb78af6dfcb131a6481e" >> $ANDROID_SDK_ROOT/licenses/android-sdk-license
+          echo "84831b9409646a918e30573bab4c9c91346d8abd" > $ANDROID_SDK_ROOT/licenses/android-sdk-preview-license
 
-					# Add more memory to the JVM
-					sed -i 's/org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m/org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m/' "android/gradle.properties"
-				'';
+          # Add more memory to the JVM
+          sed -i 's/org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m/org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m/' "android/gradle.properties"
+        '';
       };
-			onStart = {
-				start-metro = ''
+      onStart = {
+        start-metro = ''
           export ANDROID_SDK_ROOT=$PWD/android-sdk-local
           export ANDROID_HOME=$ANDROID_SDK_ROOT
           {{perPackageManager.start}}
         '';
         run-android = ''
-					# Ensure Metro is running first
+          # Ensure Metro is running first
           if ! pgrep -f "metro"; then
             echo "Starting Metro bundler first..."
             {{perPackageManager.start}} &
             sleep 10
           fi
-					
+
           export ANDROID_SDK_ROOT=$PWD/android-sdk-local
           export ANDROID_HOME=$ANDROID_SDK_ROOT
           
          	# Use the specified device
           export ANDROID_SERIAL=emulator-5554
-          
-          
           
           # Set longer timeout for React Native CLI
           export RN_CLI_CONFIG_TIMEOUT=300000
@@ -79,9 +77,9 @@
     previews = {
       enable = true;
        previews = {
-				android = {
-					manager = "web";
-			};
+        android = {
+          manager = "web";
+     };
       };
     };
   };
