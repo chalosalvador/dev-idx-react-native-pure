@@ -46,7 +46,9 @@
           {{perPackageManager.start}}
         '';
         run-android = ''
-          # Ensure Metro is running first
+					unset ANDROID_SDK_ROOT
+          
+					# Ensure Metro is running first
           if ! pgrep -f "metro"; then
             echo "Starting Metro bundler first..."
             {{perPackageManager.start}} &
