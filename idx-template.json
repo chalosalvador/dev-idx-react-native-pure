@@ -2,7 +2,7 @@
   "name": "React Native",
   "description": "A React Native starter template without Expo",
   "categories": ["Mobile"],
-  "icon": "https://www.gstatic.com/monospace/231115/logo_react-native.svg",
+  "icon": "https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/react-native/react-native.png",
   "publisher": "Google LLC",
   "host": {
     "virtualization": true
