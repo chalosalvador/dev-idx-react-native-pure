@@ -64,11 +64,11 @@
           $ANDROID_HOME/platform-tools/adb devices
 
           # If no device is specified, ask user to select one
-          # if [ -z "$ANDROID_DEVICE" ]; then
-          #   echo "Multiple devices detected. Please set ANDROID_DEVICE environment variable with the device ID"
-          #   echo "Example: ANDROID_DEVICE=emulator-5554 idx run-android"
-          #   exit 1
-          # fi
+          if [ -z "$ANDROID_DEVICE" ]; then
+           echo "Multiple devices detected. Please set ANDROID_DEVICE environment variable with the device ID"
+            echo "Example: ANDROID_DEVICE=emulator-5554 idx run-android"
+            exit 1
+          fi
 
           # Use the specified device
           export ANDROID_SERIAL=emulator-5554
