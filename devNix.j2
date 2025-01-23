@@ -55,6 +55,11 @@
           # Configure Watchman
           export WATCHMAN_SOCK_DIR=$PWD/.watchman
           mkdir -p $WATCHMAN_SOCK_DIR
+          # Stop any existing Watchman instance
+          watchman shutdown-server || true
+          # Set environment variable for Watchman socket
+          export WATCHMAN_STATE_DIR=$WATCHMAN_SOCK_DIR
+          # Start watching the project
           watchman watch $PWD
           {{perPackageManager.start}}
         '';
