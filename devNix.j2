@@ -52,6 +52,10 @@
         start-metro = ''
           export ANDROID_SDK_ROOT=$PWD/android-sdk-local
           export ANDROID_HOME=$ANDROID_SDK_ROOT
+          # Configure Watchman
+          export WATCHMAN_SOCK_DIR=$PWD/.watchman
+          mkdir -p $WATCHMAN_SOCK_DIR
+          watchman watch $PWD
           {{perPackageManager.start}}
         '';
         run-android = ''
