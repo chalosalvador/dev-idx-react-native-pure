@@ -53,23 +53,7 @@
           export ANDROID_SDK_ROOT=$HOME/.android-sdk-local
           export ANDROID_HOME=$ANDROID_SDK_ROOT
           
-          # Configure Watchman
-          export WATCHMAN_SOCK_DIR="$PWD/.watchman"
-          export WATCHMAN_STATE_DIR="$PWD/.watchman"
-          
-          # Ensure clean state
-          watchman shutdown-server || true
-          rm -rf "$WATCHMAN_SOCK_DIR"/*
-          mkdir -p "$WATCHMAN_SOCK_DIR"
-          
-          # Update .watchmanconfig
-          echo '{
-            "root_files": [".watchmanconfig"],
-            "sock_path": "'$WATCHMAN_SOCK_DIR'/sock",
-            "settle": 500
-          }' > .watchmanconfig
-          
-          # Start watching the project
+          # Simple Watchman setup
           watchman watch $PWD
           {{perPackageManager.start}}
         '';
