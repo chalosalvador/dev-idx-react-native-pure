@@ -33,9 +33,9 @@
           # Install dependencies
           {{perPackageManager.install}}
 
-          # Create local Android SDK directory
-          mkdir -p $PWD/android-sdk-local
-          export ANDROID_SDK_ROOT=$PWD/android-sdk-local
+          # Create local Android SDK directory in home folder
+          mkdir -p $HOME/.android-sdk-local
+          export ANDROID_SDK_ROOT=$HOME/.android-sdk-local
           export ANDROID_HOME=$ANDROID_SDK_ROOT
 
           # Accept Android SDK licenses
@@ -50,7 +50,7 @@
       };
       onStart = {
         start-metro = ''
-          export ANDROID_SDK_ROOT=$PWD/android-sdk-local
+          export ANDROID_SDK_ROOT=$HOME/.android-sdk-local
           export ANDROID_HOME=$ANDROID_SDK_ROOT
           # Configure Watchman
           export WATCHMAN_SOCK_DIR=$PWD/.watchman
@@ -66,7 +66,7 @@
             sleep 10
           fi
 
-          export ANDROID_SDK_ROOT=$PWD/android-sdk-local
+          export ANDROID_SDK_ROOT=$HOME/.android-sdk-local
           export ANDROID_HOME=$ANDROID_SDK_ROOT
           
          	# Use the specified device
