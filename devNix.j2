@@ -81,9 +81,9 @@
       enable = true;
        previews = {
         android = {
-          manager = "android";
-          command = ["echo", "Android preview ready"];
-     };
+          manager = "web";
+					command = ["sh", "-c", "echo 'Android preview ready' && sleep infinity"];
+     		};
       };
     };
   };
