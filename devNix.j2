@@ -78,7 +78,7 @@
           command = [
 					  "sh" 
 					  "-c" 
-            "watchman watch $PWD && {{perPackageManager.start}} $PORT"
+            "watchman watch $PWD && {{perPackageManager.start}} $PORT &"
 						"{{perPackageManager.android}}"
 						"tail" 
 						"-f" "/dev/null"];
