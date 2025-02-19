@@ -62,7 +62,7 @@
           # Ensure Metro is running first
           if ! pgrep -f "metro"; then
             echo "Starting Metro bundler first..."
-						watchman watch $PWD
+            watchman watch $PWD
             {{perPackageManager.start}} &
             sleep 10
           fi
@@ -70,7 +70,7 @@
           export ANDROID_SDK_ROOT=$HOME/.android-sdk-local
           export ANDROID_HOME=$ANDROID_SDK_ROOT
           
-         	# Use the specified device
+          # Use the specified device
           export ANDROID_SERIAL=emulator-5554
           
           # Set longer timeout for React Native CLI
@@ -81,15 +81,14 @@
     };
     previews = {
       enable = true;
-        previews = {
-          android = {
-            command = ["sleep" "infinity"];  # Just keep the preview running
-            manager = "web";
-            env = { 
-              PORT = "8081"  # Tell the web manager to monitor Metro's port
-            };
+      previews = {
+        android = {
+          command = ["sleep" "infinity"];  # Just keep the preview running
+          manager = "web";
+          env = { 
+            PORT = "8081"  # Tell the web manager to monitor Metro's port
           };
-				};
+        };
       };
     };
   };
