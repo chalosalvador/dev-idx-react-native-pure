@@ -57,7 +57,24 @@
           command = [
 					  "sh" 
 					  "-c" 
-            "export ANDROID_SERIAL=emulator-5554 && watchman watch $PWD && {{perPackageManager.start}} $PORT & {{perPackageManager.android}}"
+						 "
+            export ANDROID_SERIAL=emulator-5554
+            watchman watch $PWD
+            # Set the port for both Metro and React Native
+            export RN_METRO_PORT=$PORT
+            export METRO_PORT=$PORT
+          
+            {{perPackageManager.start}} $PORT &
+            METRO_PID=$!
+          
+            # Wait for Metro to be available
+            until curl -s http://localhost:$PORT/status > /dev/null; do
+              sleep 1
+            done
+          
+            {{perPackageManager.android}}
+            wait $METRO_PID
+        "
 						];
           manager = "web";
         };
