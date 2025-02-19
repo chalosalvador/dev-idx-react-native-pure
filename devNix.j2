@@ -3,7 +3,7 @@
         "packages": "pkgs.nodejs_20",
         "install": "npm install --prefer-offline --no-audit --no-progress",
         "android": "npm run android",
-        "start": "npm start -- --port"
+        "start": "npm start"
     },
     "yarn": {
         "packages": "pkgs.yarn",
@@ -64,7 +64,7 @@
             export RN_METRO_PORT=$PORT
             export METRO_PORT=$PORT
           
-            {{perPackageManager.start}} $PORT &
+            {{perPackageManager.start}} &
             METRO_PID=$!
           
             # Wait for Metro to be available
