@@ -79,7 +79,7 @@
         web = {
           command = [
             "sh" "-c" 
-            "watchman watch $PWD && {{perPackageManager.start}} --port 8081"
+            "watchman watch $PWD && {{perPackageManager.start}}" "--port" "$PORT"
           ];
           manager = "web";
         };
