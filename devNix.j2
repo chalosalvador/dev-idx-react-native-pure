@@ -49,18 +49,19 @@
         '';
       };
       onStart = {
-        start-metro = ''
-          export ANDROID_SDK_ROOT=$HOME/.android-sdk-local
-          export ANDROID_HOME=$ANDROID_SDK_ROOT
-          
-          # Simple Watchman setup
-          watchman watch $PWD
-          {{perPackageManager.start}}
-        '';
+        # start-metro = ''
+        #   export ANDROID_SDK_ROOT=$HOME/.android-sdk-local
+        #   export ANDROID_HOME=$ANDROID_SDK_ROOT
+        #   
+        #   # Simple Watchman setup
+        #   watchman watch $PWD
+        #   {{perPackageManager.start}}
+        # '';
         run-android = ''
           # Ensure Metro is running first
           if ! pgrep -f "metro"; then
             echo "Starting Metro bundler first..."
+						watchman watch $PWD
             {{perPackageManager.start}} &
             sleep 10
           fi
