@@ -20,7 +20,7 @@
     pkgs.gradle
     pkgs.android-tools
     pkgs.watchman
-    pkgs.netcat
+    pkgs.curl  # Add curl for health checking Metro
   ];
   idx = {
     extensions = [
@@ -82,14 +82,8 @@
     previews = {
       enable = true;
        previews = {
-        # android = {
-				#   # noop
-        #   manager = "web";
-        # 	command = [ "tail" "-f" "/dev/null" ];
-        # };
-
         android = {
-          command = ["nc" "-l" "8081"];  # Use netcat to listen on Metro's port
+          command = ["curl" "--silent" "--retry" "30" "--retry-delay" "1" "--retry-all-errors" "http://localhost:8081/status"];
           manager = "web";
         };
       };
