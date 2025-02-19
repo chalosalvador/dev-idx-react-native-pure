@@ -59,11 +59,11 @@
         #   {{perPackageManager.start}}
         # '';
         run-android = ''
-          export ANDROID_SDK_ROOT=$HOME/.android-sdk-local
-          export ANDROID_HOME=$ANDROID_SDK_ROOT
+         # export ANDROID_SDK_ROOT=$HOME/.android-sdk-local
+         # export ANDROID_HOME=$ANDROID_SDK_ROOT
           
           # Use the specified device
-          export ANDROID_SERIAL=emulator-5554
+          # export ANDROID_SERIAL=emulator-5554
           
           # Set longer timeout for React Native CLI
           # export RN_CLI_CONFIG_TIMEOUT=300000
@@ -78,9 +78,12 @@
           command = [
 					  "sh" 
 					  "-c" 
-            "watchman watch $PWD && {{perPackageManager.start}} $PORT & && {{perPackageManager.android}}"
-						"tail" 
-						"-f" "/dev/null"];
+						"export ANDROID_SERIAL=emulator-5554"
+
+            "watchman watch $PWD && {{perPackageManager.start}} $PORT & {{perPackageManager.android}}"
+						#"tail" 
+						#"-f" "/dev/null"
+						];
           manager = "web";
         };
       };
