@@ -49,27 +49,6 @@
           sed -i 's/org.gradle.jvmargs=-Xmx2048m -XX:MaxMetaspaceSize=512m/org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=512m/' "android/gradle.properties"
         '';
       };
-      onStart = {
-        # start-metro = ''
-        #   export ANDROID_SDK_ROOT=$HOME/.android-sdk-local
-        #   export ANDROID_HOME=$ANDROID_SDK_ROOT
-        #   
-        #   # Simple Watchman setup
-        #   watchman watch $PWD
-        #   {{perPackageManager.start}}
-        # '';
-        run-android = ''
-         # export ANDROID_SDK_ROOT=$HOME/.android-sdk-local
-         # export ANDROID_HOME=$ANDROID_SDK_ROOT
-          
-          # Use the specified device
-          # export ANDROID_SERIAL=emulator-5554
-          
-          # Set longer timeout for React Native CLI
-          # export RN_CLI_CONFIG_TIMEOUT=300000
-          # {{perPackageManager.android}}
-        '';
-      };
     };
     previews = {
       enable = true;
