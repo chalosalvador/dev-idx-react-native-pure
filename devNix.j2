@@ -78,8 +78,7 @@
           command = [
 					  "sh" 
 					  "-c" 
-            "watchman watch $PWD && {{perPackageManager.start}} $PORT &"
-						"{{perPackageManager.android}}"
+            "watchman watch $PWD && {{perPackageManager.start}} $PORT & && {{perPackageManager.android}}"
 						"tail" 
 						"-f" "/dev/null"];
           manager = "web";
