@@ -3,7 +3,7 @@
         "packages": "pkgs.nodejs_20",
         "install": "npm install --prefer-offline --no-audit --no-progress",
         "android": "npm run android",
-        "start": "npm start -- --port"
+        "start": "npm start"
     },
     "yarn": {
         "packages": "pkgs.yarn",
@@ -59,24 +59,21 @@
 					  "-c" 
 						 "
             export ANDROID_SERIAL=emulator-5554
-            watchman watch $PWD
-            
-            # Start Metro with the preview system port
-            {{perPackageManager.start}} $PORT &
-            METRO_PID=$!
-            
-            # Wait for Metro to be available
-            until curl -s http://localhost:$PORT/status > /dev/null; do
-              sleep 1
-            done
-            
-            # Configure React Native to use the same port
-            export CLI_PORT=$PORT
-            export METRO_PORT=$PORT
-            export RN_METRO_PORT=$PORT
-            
-            {{perPackageManager.android}}
-            wait $METRO_PID
+          watchman watch $PWD
+          
+          # Set the correct Metro port environment variable
+          export RCT_METRO_PORT=$PORT
+          
+          {{perPackageManager.start}} &
+          METRO_PID=$!
+          
+          # Wait for Metro to be available
+          until curl -s http://localhost:$PORT/status > /dev/null; do
+            sleep 1
+          done
+          
+          {{perPackageManager.android}}
+          wait $METRO_PID
           "
 						];
           manager = "web";
