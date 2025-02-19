@@ -59,13 +59,7 @@
         #   {{perPackageManager.start}}
         # '';
         run-android = ''
-          # Ensure Metro is running first
-          if ! pgrep -f "metro"; then
-            echo "Starting Metro bundler first..."
-            watchman watch $PWD
-            {{perPackageManager.start}} &
-            sleep 10
-          fi
+          
 
           export ANDROID_SDK_ROOT=$HOME/.android-sdk-local
           export ANDROID_HOME=$ANDROID_SDK_ROOT
@@ -82,8 +76,15 @@
     previews = {
       enable = true;
       previews = {
+        web = {
+          command = [
+            "sh" "-c" 
+            "watchman watch $PWD && {{perPackageManager.start}} --port 8081"
+          ];
+          manager = "web";
+        };
         android = {
-          command = ["sleep" "infinity"];  # Just keep the preview running
+          command = ["tail" "-f" "/dev/null"];
           manager = "web";
         };
       };
