@@ -66,23 +66,22 @@
           export ANDROID_SERIAL=emulator-5554
           
           # Set longer timeout for React Native CLI
-          export RN_CLI_CONFIG_TIMEOUT=300000
-          {{perPackageManager.android}}
+          # export RN_CLI_CONFIG_TIMEOUT=300000
+          # {{perPackageManager.android}}
         '';
       };
     };
     previews = {
       enable = true;
       previews = {
-        web = {
-          command = [
-            "sh" "-c" 
-            "watchman watch $PWD && {{perPackageManager.start}} $PORT"
-          ];
-          manager = "web";
-        };
         android = {
-          command = ["tail" "-f" "/dev/null"];
+          command = [
+					  "sh" 
+					  "-c" 
+            "watchman watch $PWD && {{perPackageManager.start}} $PORT"
+						"{{perPackageManager.android}}"
+						"tail" 
+						"-f" "/dev/null"];
           manager = "web";
         };
       };
