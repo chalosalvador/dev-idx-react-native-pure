@@ -81,15 +81,16 @@
     previews = {
       enable = true;
        previews = {
-			  web = {
-				  manager = "web";
- 					command = [ "tail" "-f" "/dev/null" ];
-				};
+        # android = {
+				#   # noop
+        #   manager = "web";
+        # 	command = [ "tail" "-f" "/dev/null" ];
+        # };
+
         android = {
-				  # noop
+          command = ["nc" "-l" "8081"];  # Use netcat to listen on Metro's port
           manager = "web";
- 					command = [ "tail" "-f" "/dev/null" ];
-				};
+        };
       };
     };
   };
