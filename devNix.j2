@@ -65,7 +65,7 @@
           command = [
             "sh" 
             "-c" 
-            "
+            ''
             # Set the correct emulator to use
             export ANDROID_SERIAL=emulator-5554
             
@@ -85,7 +85,7 @@
           
             {{perPackageManager.android}}
             wait $METRO_PID
-           "
+           ''
           ];
           manager = "web";
         };
