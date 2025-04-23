@@ -10,6 +10,11 @@
 	# Replace hyphens with underscores for the project name
     SANITIZED_PROJECT_NAME="''${WS_NAME//-/_}"
 
+    # Inform user if sanitization occurred
+    if [ "$SANITIZED_PROJECT_NAME" != "$WS_NAME" ]; then
+      echo "[INFO] Workspace name '$WS_NAME' sanitized to '$SANITIZED_PROJECT_NAME' for React Native project initialization." >&2
+    fi
+
     mkdir -p "$SANITIZED_PROJECT_NAME"
 
     # Initialize the project using the sanitized name
