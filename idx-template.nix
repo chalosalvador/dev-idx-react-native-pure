@@ -7,20 +7,20 @@
     pkgs.nixfmt
   ];
   bootstrap = ''
-    mkdir -p "$WS_NAME"
+	# Replace hyphens with underscores for the project name
+    SANITIZED_PROJECT_NAME="''${WS_NAME//-/_}"
 
-		# Replace hyphens with underscores for the project name
-    PROJECT_NAME="''${WS_NAME//-/_}"
+    mkdir -p "$SANITIZED_PROJECT_NAME"
 
     # Initialize the project using the sanitized name
-    npx -y @react-native-community/cli init "$PROJECT_NAME" --skip-install
+    npx -y @react-native-community/cli init "$SANITIZED_PROJECT_NAME" --skip-install
     
-    mkdir "$WS_NAME/.idx/"
-    packageManager=${packageManager} j2 ${./devNix.j2} -o "$WS_NAME/.idx/dev.nix"
-    nixfmt "$WS_NAME/.idx/dev.nix"
-    packageManager=${packageManager} j2 ${./README.j2} -o "$WS_NAME/README.md"
+    mkdir "$SANITIZED_PROJECT_NAME/.idx/"
+    packageManager=${packageManager} j2 ${./devNix.j2} -o "$SANITIZED_PROJECT_NAME/.idx/dev.nix"
+    nixfmt "$SANITIZED_PROJECT_NAME/.idx/dev.nix"
+    packageManager=${packageManager} j2 ${./README.j2} -o "$SANITIZED_PROJECT_NAME/README.md"
     
-    chmod -R +w "$WS_NAME"
-    mv "$WS_NAME" "$out"
+    chmod -R +w "$SANITIZED_PROJECT_NAME"
+    mv "$SANITIZED_PROJECT_NAME" "$out"
   '';
 }
