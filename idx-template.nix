@@ -8,9 +8,12 @@
   ];
   bootstrap = ''
     mkdir -p "$WS_NAME"
-    
-    # Initialize the project using npx directly
-    npx -y @react-native-community/cli init "$WS_NAME" --skip-install
+
+		# Replace hyphens with underscores for the project name
+    PROJECT_NAME="''${WS_NAME//-/_}"
+
+    # Initialize the project using the sanitized name
+    npx -y @react-native-community/cli init "$PROJECT_NAME" --skip-install
     
     mkdir "$WS_NAME/.idx/"
     packageManager=${packageManager} j2 ${./devNix.j2} -o "$WS_NAME/.idx/dev.nix"
