@@ -7,25 +7,24 @@
     pkgs.nixfmt
   ];
   bootstrap = ''
-	# Replace hyphens with underscores for the project name
-    SANITIZED_PROJECT_NAME="''${WS_NAME//-/_}"
-
-    # Inform user if sanitization occurred
-    if [ "$SANITIZED_PROJECT_NAME" != "$WS_NAME" ]; then
-      echo "[INFO] Workspace name '$WS_NAME' sanitized to '$SANITIZED_PROJECT_NAME' for React Native project initialization." >&2
+    # Validate workspace name: React Native CLI init does not allow hyphens.
+    if [[ "$WS_NAME" == *-* ]]; then
+      echo "[ERROR] Workspace name '$WS_NAME' contains hyphens, which are not allowed by 'react-native init'. Please use only alphanumeric characters or underscores." >&2
+      exit 1
     fi
 
-    mkdir -p "$SANITIZED_PROJECT_NAME"
-
-    # Initialize the project using the sanitized name
-    npx -y @react-native-community/cli init "$SANITIZED_PROJECT_NAME" --skip-install
+    # If validation passes, proceed with setup using the original WS_NAME
+    mkdir -p "$WS_NAME"
     
-    mkdir "$SANITIZED_PROJECT_NAME/.idx/"
-    packageManager=${packageManager} j2 ${./devNix.j2} -o "$SANITIZED_PROJECT_NAME/.idx/dev.nix"
-    nixfmt "$SANITIZED_PROJECT_NAME/.idx/dev.nix"
-    packageManager=${packageManager} j2 ${./README.j2} -o "$SANITIZED_PROJECT_NAME/README.md"
+    # Initialize the project using npx directly
+    npx -y @react-native-community/cli init "$WS_NAME" --skip-install
     
-    chmod -R +w "$SANITIZED_PROJECT_NAME"
-    mv "$SANITIZED_PROJECT_NAME" "$out"
+    mkdir "$WS_NAME/.idx/"
+    packageManager=${packageManager} j2 ${./devNix.j2} -o "$WS_NAME/.idx/dev.nix"
+    nixfmt "$WS_NAME/.idx/dev.nix"
+    packageManager=${packageManager} j2 ${./README.j2} -o "$WS_NAME/README.md"
+    
+    chmod -R +w "$WS_NAME"
+    mv "$WS_NAME" "$out"
   '';
 }
